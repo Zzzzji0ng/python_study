@@ -140,5 +140,72 @@ else :
 # elif == else if
 ```
 
- TODO [循环 - 廖雪峰的官方网站 (liaoxuefeng.com)](https://www.liaoxuefeng.com/wiki/1016959663602400/1017100774566304)
 
+
+#### 遍历：
+
+```json
+# 使用 for in 字符串|列表|元组|字典|集合：进行遍历
+
+def traverseByFor(max):
+    for x in list(range(max)):
+        print("x : ", x)
+    return
+
+# 使用 while 的方式进行遍历
+def traverseByWhile(max):
+    i = 0
+    while i < max:
+        print("i : ", i)
+        i += 1
+    return
+```
+
+
+
+### dict 和 set:
+
+#### dict 字典，类似map
+
+```python
+def getDict():
+    d1 = {}
+    d1["key1"] = 'value1'
+    d1["key2"] = 2
+    d1["key3"] = False
+    print("key1 : ", d1["key1"])
+    print("key2 : ", d1["key2"])
+    print("key3 : ", d1["key3"])
+
+    # 通过in判断是否存在key
+    print("是否存在 key1 :", "key1" in d1)
+
+    # 通过get判获取，不存在key也不会报错，返回 None
+    print("获取 key3 :", d1.get("key3"))
+    print("获取 key4 :", d1.get("key4"))
+
+    # 通过 pop 移除某个键值对
+    d1.pop("key3")
+    print("获取 key3 :", d1.get("key3"))
+```
+
+#### set 和 Java 相同
+
+```python
+def getSet():
+    # 无序，不能重复，创建的时候，需要使用一个list
+    s1 = set(["key1", "key2", "key3", "key4"])
+    print("set: ", s1)
+
+    # 使用add来添加
+    s1.add("key5")
+    print("set: ", s1)
+
+    # 使用remove来删除
+    s1.remove("key1")
+    print("set: ", s1)
+```
+
+
+
+TODO [函数的参数 - 廖雪峰的官方网站 (liaoxuefeng.com)](https://www.liaoxuefeng.com/wiki/1016959663602400/1017261630425888)
