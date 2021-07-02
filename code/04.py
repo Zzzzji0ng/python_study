@@ -1,0 +1,174 @@
+# 类的创建及使用
+
+# 类的创建
+class Class1(object):
+    # 相当于构造函数，通过 self 对象来设置成员变量
+    def __init__(self, name, age):
+        # 这种方式定义的成员变量，可以通过实例.属性直接获取，为公开属性
+        self.name = name
+        self.age = age
+
+    # 这种方法，可以通过实例.方法名直接使用，为公开方法
+    def get_name(self):
+        return self.name
+
+    def get_age(self):
+        return self.age
+
+
+def useClass1():
+    class1 = Class1("小明", 5)
+    print("age :", class1.age)
+    print("age :", class1.get_age())
+    print("name :", class1.get_name())
+
+
+# 私有属性及私有方法
+class Class2(object):
+
+    # 使用两个下划线标记，这个属性是私有属性，不允许直接访问
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+
+    # 使用两个下划线定义的方法，表示为私有方法，不能直接访问
+    def __get_name(self):
+        return self.__name
+
+    def __get_age(self):
+        return self.__age
+
+def useClass2():
+    class2 = Class2("小明", 5)
+    # 私有方法，只能通过 实例._类名方法名进行调用，这种方式不推荐
+    print("age :", class2._Class2__get_name())
+    print("name :", class2._Class2__get_age())
+
+    # 无法通过以下方式进行访问
+    print("age :", class2.__age)
+    print("age :", class2.__get_name())
+    print("name :", class2.__get_age())
+
+# get set 方法的优雅实现
+class Class3(object):
+    def __init__(self, name):
+        # 使用一个下划线，来表示这个属性不希望被修改，但是实际上还是可以被修改
+        self._name = name
+
+    # 使用@property注解，可以将某个方法，视作为一个只读属性使用，如：class.name
+    @property
+    def name(self):
+        return self._name
+
+    # 和@property标记一个set方法
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+def useClass3():
+    class3 = Class3("xiaoming")
+    # 和属性一样，直接读取
+    print("name:", class3.name)
+    # 和属性设置一样，直接设置
+    class3.name = "xiaohong"
+    print("name:", class3.name)
+
+
+# 属性的限制
+class Class4(object):
+    # 限制这个实例只允许有这两个属性
+    __slots__ = ('_name', 'age')
+
+    def __init__(self, name):
+        # 使用一个下划线，来表示这个属性不希望被修改，但是实际上还是可以被修改
+        self._name = name
+
+def useClass4():
+    class4 = Class4("xiaoming")
+    # age 在属性限制中，允许赋值
+    class4.age = 10
+    print("age:", class4.age)
+    # price 不在属性限制中，不允许赋值，会抛出异常
+    class4.price = 20
+    print("price:", class4.price)
+
+
+# 静态方法和类方法
+class Class5(object):
+
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+
+    # 使用注解来表示这个是一个静态方法
+    @staticmethod
+    def isBigInt(a):
+        return a > 10
+
+    # 第一个参数，表示当前类的元数据对象，可以将他理解为，静态构造方法
+    @classmethod
+    def getClass5(cls):
+        return cls("xiaoming")
+
+def useClass5():
+    # 使用 类.静态方法名来调用方法
+    print("11 is big int :", Class5.isBigInt(11))
+    print("1 is big int :", Class5.isBigInt(1))
+
+    class5 = Class5.getClass5()
+    print("name:", class5.name)
+
+
+# 继承及多态
+
+# 可以通过abc模块的ABCMeta元类和abstractmethod包装器来达到抽象类的效果
+from abc import abstractmethod
+class Class6Abs(object):
+
+    def __init__(self, name):
+        self._name = name
+
+    @property
+    def name(self):
+        return self._name
+
+    # 这是一个抽象方法，由子类实现
+    @abstractmethod
+    def doHobby(self):
+        pass    # 空语句意思
+
+
+
+# 通过类定义看的括号中指定父类类名，来实现继承
+class Class6Sub1(Class6Abs):
+
+    def __init__(self, name, age):
+        #需要先调用父类的构造方法
+        super().__init__(name)
+        self._age = age
+
+    @property
+    def age(self):
+        return self._age
+
+    # 实现抽象方法
+    def doHobby(self):
+        print("sing")
+
+def useClass6():
+    sub1 = Class6Sub1("小明", 5)
+    # 这里就可以读取父类中定义的属性了
+    print("名字:", sub1.name, "年龄：", sub1.age)
+    # 执行抽象方法
+    sub1.doHobby()
+
+if __name__ == '__main__':
+    # useClass1()
+    # useClass2()
+    # useClass3()
+    # useClass4()
+    # useClass5()
+    useClass6()
